@@ -92,18 +92,18 @@ export default defineConfig([
 		files: ['**/*.ts', '**/*.tsx'],
 
 		rules: {
-			'no-console': 'warn',
+			// 'no-console': 'warn',
 			'react/prop-types': 'off',
 			'react/jsx-uses-react': 'off',
 			'react/react-in-jsx-scope': 'off',
 			'react-hooks/exhaustive-deps': 'off',
 			'jsx-a11y/click-events-have-key-events': 'warn',
 			'jsx-a11y/interactive-supports-focus': 'warn',
-			'prettier/prettier': 'warn',
+			'prettier/prettier': 'off',
 			'no-unused-vars': 'off',
 			'unused-imports/no-unused-vars': 'off',
 			'unused-imports/no-unused-imports': 'warn',
-
+			"react/no-unescaped-entities": 'off',
 			'@typescript-eslint/no-unused-vars': [
 				'warn',
 				{
@@ -114,7 +114,7 @@ export default defineConfig([
 			],
 
 			'import/order': [
-				'warn',
+				'off',
 				{
 					groups: [
 						'type',
@@ -142,7 +142,7 @@ export default defineConfig([
 			'react/self-closing-comp': 'warn',
 
 			'react/jsx-sort-props': [
-				'warn',
+				'off',
 				{
 					callbacksLast: true,
 					shorthandFirst: true,
@@ -152,7 +152,7 @@ export default defineConfig([
 			],
 
 			'padding-line-between-statements': [
-				'warn',
+				'off',
 				{
 					blankLine: 'always',
 					prev: '*',
@@ -167,6 +167,21 @@ export default defineConfig([
 					blankLine: 'any',
 					prev: ['const', 'let', 'var'],
 					next: ['const', 'let', 'var'],
+				},
+			],
+		},
+	},
+	{
+		files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
+		rules: {
+			// Disallow ONLY `console.log`
+			'no-restricted-syntax': [
+				'warn',
+				{
+					selector:
+						"CallExpression[callee.object.name='console'][callee.property.name='log']",
+					message:
+						'Avoid using `console.log`; use `console.info/warn/error/table/dir` etc. instead.',
 				},
 			],
 		},

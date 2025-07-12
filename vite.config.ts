@@ -8,8 +8,8 @@ export default defineConfig({
 		react(),
 		tsconfigPaths(),
 		tanstackRouter({
-			target: 'react',
-			autoCodeSplitting: true,
-		}),
-	],
+			target: 'react'
+			// autoCodeSplitting: true,
+		})
+	]
 });
