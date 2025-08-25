@@ -16,7 +16,7 @@ export const Route = createRootRoute({
 				<HeroLink
 					isExternal
 					className="flex items-center gap-1 text-current"
-					to={'https://heroui.com' as '/'}
+					href="https://heroui.com"
 					title="heroui.com homepage"
 				>
 					<span className="text-default-600">Powered by</span>

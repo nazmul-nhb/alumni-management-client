@@ -72,13 +72,13 @@ export const Navbar = () => {
 
 			<NavbarContent className="hidden sm:flex basis-1/5 sm:basis-full" justify="end">
 				<NavbarItem className="hidden sm:flex gap-2">
-					<HeroLink isExternal to={siteConfig.links.twitter} title="Twitter">
+					<HeroLink isExternal href={siteConfig.links.twitter} title="Twitter">
 						<TwitterIcon className="text-default-500" />
 					</HeroLink>
-					<HeroLink isExternal to={siteConfig.links.discord} title="Discord">
+					<HeroLink isExternal href={siteConfig.links.discord} title="Discord">
 						<DiscordIcon className="text-default-500" />
 					</HeroLink>
-					<HeroLink isExternal to={siteConfig.links.github} title="GitHub">
+					<HeroLink isExternal href={siteConfig.links.github} title="GitHub">
 						<GithubIcon className="text-default-500" />
 					</HeroLink>
 					<ThemeSwitch />
@@ -87,22 +87,23 @@ export const Navbar = () => {
 			</NavbarContent>
 
 			<NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
-				<HeroLink isExternal to={siteConfig.links.github}>
+				<HeroLink isExternal href={siteConfig.links.github}>
 					<GithubIcon className="text-default-500" />
 				</HeroLink>
 				<ThemeSwitch />
 				<NavbarMenuToggle />
 			</NavbarContent>
 
+			{/* Mobile & Tablet */}
 			<NavbarMenu>
 				{searchInput}
 				<div className="mx-4 mt-2 flex flex-col gap-2">
-					{siteConfig.navMenuItems.map((item, index) => (
+					{siteConfig.navItems.map((item, index, self) => (
 						<NavbarMenuItem key={`${item}-${index}`}>
 							<HeroLink
 								color={
 									index === 2 ? 'primary'
-									: index === siteConfig.navMenuItems.length - 1 ?
+									: index === self.length - 1 ?
 										'danger'
 									:	'foreground'
 								}
