@@ -19,7 +19,7 @@ const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
 	baseDirectory: __dirname,
 	recommendedConfig: js.configs.recommended,
-	allConfig: js.configs.all,
+	allConfig: js.configs.all
 });
 
 export default defineConfig([
@@ -43,7 +43,7 @@ export default defineConfig([
 		'!**/jest.config.js',
 		'!**/plopfile.js',
 		'!**/react-shim.js',
-		'!**/tsup.config.ts',
+		'!**/tsup.config.ts'
 	]),
 	{
 		extends: fixupConfigRules(
@@ -51,8 +51,8 @@ export default defineConfig([
 				'plugin:react/recommended',
 				'plugin:prettier/recommended',
 				'plugin:react-hooks/recommended',
-				'plugin:jsx-a11y/recommended',
-			),
+				'plugin:jsx-a11y/recommended'
+			)
 		),
 
 		plugins: {
@@ -61,15 +61,15 @@ export default defineConfig([
 			import: fixupPluginRules(_import),
 			'@typescript-eslint': typescriptEslint,
 			'jsx-a11y': fixupPluginRules(jsxA11Y),
-			prettier: fixupPluginRules(prettier),
+			prettier: fixupPluginRules(prettier)
 		},
 
 		languageOptions: {
 			globals: {
 				...Object.fromEntries(
-					Object.entries(globals.browser).map(([key]) => [key, 'off']),
+					Object.entries(globals.browser).map(([key]) => [key, 'off'])
 				),
-				...globals.node,
+				...globals.node
 			},
 
 			parser: tsParser,
@@ -78,15 +78,15 @@ export default defineConfig([
 
 			parserOptions: {
 				ecmaFeatures: {
-					jsx: true,
-				},
-			},
+					jsx: true
+				}
+			}
 		},
 
 		settings: {
 			react: {
-				version: 'detect',
-			},
+				version: 'detect'
+			}
 		},
 
 		files: ['**/*.ts', '**/*.tsx'],
@@ -103,14 +103,14 @@ export default defineConfig([
 			'no-unused-vars': 'off',
 			'unused-imports/no-unused-vars': 'off',
 			'unused-imports/no-unused-imports': 'warn',
-			"react/no-unescaped-entities": 'off',
+			'react/no-unescaped-entities': 'off',
 			'@typescript-eslint/no-unused-vars': [
 				'warn',
 				{
 					args: 'after-used',
 					ignoreRestSiblings: false,
-					argsIgnorePattern: '^_.*?$',
-				},
+					argsIgnorePattern: '^_.*?$'
+				}
 			],
 
 			'import/order': [
@@ -124,19 +124,19 @@ export default defineConfig([
 						'internal',
 						'parent',
 						'sibling',
-						'index',
+						'index'
 					],
 
 					pathGroups: [
 						{
 							pattern: '~/**',
 							group: 'external',
-							position: 'after',
-						},
+							position: 'after'
+						}
 					],
 
-					'newlines-between': 'always',
-				},
+					'newlines-between': 'always'
+				}
 			],
 
 			'react/self-closing-comp': 'warn',
@@ -147,8 +147,8 @@ export default defineConfig([
 					callbacksLast: true,
 					shorthandFirst: true,
 					noSortAlphabetically: false,
-					reservedFirst: true,
-				},
+					reservedFirst: true
+				}
 			],
 
 			'padding-line-between-statements': [
@@ -156,20 +156,20 @@ export default defineConfig([
 				{
 					blankLine: 'always',
 					prev: '*',
-					next: 'return',
+					next: 'return'
 				},
 				{
 					blankLine: 'always',
 					prev: ['const', 'let', 'var'],
-					next: '*',
+					next: '*'
 				},
 				{
 					blankLine: 'any',
 					prev: ['const', 'let', 'var'],
-					next: ['const', 'let', 'var'],
-				},
-			],
-		},
+					next: ['const', 'let', 'var']
+				}
+			]
+		}
 	},
 	{
 		files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
@@ -181,9 +181,9 @@ export default defineConfig([
 					selector:
 						"CallExpression[callee.object.name='console'][callee.property.name='log']",
 					message:
-						'Avoid using `console.log`; use `console.info/warn/error/table/dir` etc. instead.',
-				},
-			],
-		},
-	},
+						'Avoid using `console.log`; use `console.info/warn/error/table/dir` etc. instead.'
+				}
+			]
+		}
+	}
 ]);

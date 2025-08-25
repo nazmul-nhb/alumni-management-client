@@ -1,22 +1,21 @@
-import { Kbd } from '@heroui/kbd';
-import HeroLink from './ui/HeroLink';
 import { Input } from '@heroui/input';
+import { Kbd } from '@heroui/kbd';
 import {
 	Navbar as HeroUINavbar,
 	NavbarBrand,
 	NavbarContent,
 	NavbarItem,
-	NavbarMenuToggle,
 	NavbarMenu,
-	NavbarMenuItem
+	NavbarMenuItem,
+	NavbarMenuToggle
 } from '@heroui/navbar';
 import { link as linkStyles } from '@heroui/theme';
 import clsx from 'clsx';
+import { HeroLink } from './ui/HeroLink';
 
-import { siteConfig } from '@/config/site';
+import { DiscordIcon, GithubIcon, Logo, SearchIcon, TwitterIcon } from '@/components/icons';
 import { ThemeSwitch } from '@/components/theme-switch';
-import { TwitterIcon, GithubIcon, DiscordIcon, SearchIcon } from '@/components/icons';
-import { Logo } from '@/components/icons';
+import { siteConfig } from '@/config/site';
 
 export const Navbar = () => {
 	const searchInput = (
@@ -47,7 +46,7 @@ export const Navbar = () => {
 					<HeroLink
 						className="flex justify-start items-center gap-1"
 						color="foreground"
-						href="/"
+						to="/"
 					>
 						<Logo />
 						<p className="font-bold text-inherit">ACME</p>
@@ -62,7 +61,7 @@ export const Navbar = () => {
 									'data-[active=true]:text-primary data-[active=true]:font-medium'
 								)}
 								color="foreground"
-								href={item.href}
+								to={item.href}
 							>
 								{item.label}
 							</HeroLink>
@@ -73,13 +72,13 @@ export const Navbar = () => {
 
 			<NavbarContent className="hidden sm:flex basis-1/5 sm:basis-full" justify="end">
 				<NavbarItem className="hidden sm:flex gap-2">
-					<HeroLink isExternal href={siteConfig.links.twitter} title="Twitter">
+					<HeroLink isExternal to={siteConfig.links.twitter} title="Twitter">
 						<TwitterIcon className="text-default-500" />
 					</HeroLink>
-					<HeroLink isExternal href={siteConfig.links.discord} title="Discord">
+					<HeroLink isExternal to={siteConfig.links.discord} title="Discord">
 						<DiscordIcon className="text-default-500" />
 					</HeroLink>
-					<HeroLink isExternal href={siteConfig.links.github} title="GitHub">
+					<HeroLink isExternal to={siteConfig.links.github} title="GitHub">
 						<GithubIcon className="text-default-500" />
 					</HeroLink>
 					<ThemeSwitch />
@@ -88,7 +87,7 @@ export const Navbar = () => {
 			</NavbarContent>
 
 			<NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
-				<HeroLink isExternal href={siteConfig.links.github}>
+				<HeroLink isExternal to={siteConfig.links.github}>
 					<GithubIcon className="text-default-500" />
 				</HeroLink>
 				<ThemeSwitch />
@@ -107,7 +106,7 @@ export const Navbar = () => {
 										'danger'
 									:	'foreground'
 								}
-								href="#"
+								to="/"
 								size="lg"
 							>
 								{item.label}

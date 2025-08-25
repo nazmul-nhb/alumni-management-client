@@ -1,7 +1,7 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import HeroLink from '../components/ui/HeroLink';
 import { Navbar } from '../components/navbar';
+import { HeroLink } from '../components/ui/HeroLink';
 
 export const Route = createRootRoute({
 	component: () => (
@@ -16,7 +16,7 @@ export const Route = createRootRoute({
 				<HeroLink
 					isExternal
 					className="flex items-center gap-1 text-current"
-					href="https://heroui.com"
+					to={'https://heroui.com' as '/'}
 					title="heroui.com homepage"
 				>
 					<span className="text-default-600">Powered by</span>
