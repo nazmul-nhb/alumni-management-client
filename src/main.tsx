@@ -1,9 +1,11 @@
 import '@/styles/globals.css';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { StrictMode } from 'react';
 import { HeroUIProvider } from '@heroui/system';
-import ReactDOM from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
+import { TitleProvider } from 'nhb-hooks';
+import { StrictMode } from 'react';
+import ReactDOM from 'react-dom/client';
+import { siteConfig } from './config/site';
 import { routeTree } from './routeTree.gen';
 
 const queryClient = new QueryClient();
@@ -32,7 +34,9 @@ if (!rootElement.innerHTML) {
 		<StrictMode>
 			<QueryClientProvider client={queryClient}>
 				<HeroUIProvider>
-					<RouterProvider router={router} />
+					<TitleProvider config={{ siteTitle: siteConfig.name }}>
+						<RouterProvider router={router} />
+					</TitleProvider>
 				</HeroUIProvider>
 			</QueryClientProvider>
 		</StrictMode>
