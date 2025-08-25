@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { title } from '../components/primitives';
 import { useTitle } from 'nhb-hooks';
+import { title } from '../components/primitives';
+import { useGetQuery } from '../hooks/useGetQuery';
 
 export const Route = createFileRoute('/about')({
 	component: RouteComponent,
@@ -15,6 +16,13 @@ export const Route = createFileRoute('/about')({
 
 function RouteComponent() {
 	useTitle('About');
+
+	const { data, isLoading } = useGetQuery<{ about: string }>({
+		endpoint: '/alumni',
+		queryKey: ['Alumni']
+	});
+
+	console.log({ data, isLoading });
 
 	return (
 		<section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">

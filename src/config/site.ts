@@ -3,6 +3,7 @@ export type SiteConfig = typeof siteConfig;
 export const siteConfig = {
 	name: 'PU English Alumni',
 	description: 'Alumni Management for Prime University English Department',
+	token_name: 'alumni-token',
 	navItems: [
 		{
 			label: 'Home',
