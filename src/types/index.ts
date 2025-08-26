@@ -4,9 +4,11 @@ import type { LooseLiteral, Prettify } from 'nhb-toolbox/utils/types';
 import type { SVGProps } from 'react';
 import type { QUERY_KEYS } from '../config/constants';
 
-export type IconSvgProps = SVGProps<SVGSVGElement> & {
-	size?: number;
-};
+export type IconSvgProps = Prettify<
+	SVGProps<SVGSVGElement> & {
+		size?: number;
+	}
+>;
 
 export type CombinedLinkProps = Prettify<HLinkProps & TLinkProps>;
 

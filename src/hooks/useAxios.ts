@@ -5,14 +5,14 @@ import { useEffect } from 'react';
 import { baseURL } from '../config/constants';
 import { siteConfig } from '../config/site';
 
-const axiosInstance = axios.create({ baseURL });
-
 export const useAxiosPublic = () => {
-	return axiosInstance;
+	return axios.create({ baseURL });
 };
 
 export const useAxiosSecure = () => {
 	const navigate = useNavigate();
+
+	const axiosInstance = axios.create({ baseURL });
 
 	useEffect(() => {
 		// request interceptor to add authorization header for every secure call to the api

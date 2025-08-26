@@ -1,20 +1,60 @@
 import { useQuery, type UndefinedInitialDataOptions } from '@tanstack/react-query';
 import type { QueryObject } from 'nhb-toolbox/object/types';
 import type { TQueryKey } from '../types';
+import type { IServerResponse } from '../types/interface';
 import { useAxiosPublic, useAxiosSecure } from './useAxios';
 
-export interface GetQueryOptions<T>
+/**
+ * * Options for the query hook.
+ *
+ * @template T - the inner `data` type returned inside `IServerResponse`
+ */
+export interface QueryOptions<T>
 	extends Omit<
-		UndefinedInitialDataOptions<T, Error, T, readonly TQueryKey[]>,
+		UndefinedInitialDataOptions<
+			T | undefined,
+			Error,
+			T | undefined,
+			readonly TQueryKey[]
+		>,
 		'queryKey' | 'queryFn'
 	> {
+	/** API endpoint path starting with a slash */
 	endpoint: `/${string}`;
+	/** optional query params appended to the request */
 	params?: QueryObject;
+	/** stable query key used by TanStack Query for caching/invalidation */
 	queryKey: TQueryKey[];
+	/** which axios instance to use, defaults to `'public'` */
 	connection?: 'secured' | 'public';
 }
 
-export const useGetQuery = <T>(options: GetQueryOptions<T>) => {
+/**
+ * * A thin wrapper around TanStack Query's `useQuery` with axios integration.
+ *
+ * - Automatically chooses between secured/public axios instances.
+ * - Strongly typed with the generic `T` representing the `data` field inside your API response.
+ * - Uses `queryKey` for cache identity and invalidation.
+ *
+ * @template T - The type of the response `data` field inside `IServerResponse`.
+ *
+ * @param options - Configuration object extending TanStack's `UndefinedInitialDataOptions`
+ *                  with additional fields like `endpoint`, `params`, `queryKey`, and `connection`.
+ *
+ * @returns The full `UseQueryResult` object from TanStack Query, containing:
+ * - `data`: typed as `T | undefined`
+ * - `isLoading`, `isError`, `error`, etc.
+ *
+ * @example
+ * ```ts
+ * const { data, isLoading } = useGetQuery<{ name: string }>({
+ *   endpoint: '/users',
+ *   queryKey: ['Users'],
+ *   connection: 'secured'
+ * });
+ * ```
+ */
+export const useGetQuery = <T>(options: QueryOptions<T>) => {
 	const axiosPublic = useAxiosPublic();
 	const axiosSecure = useAxiosSecure();
 
@@ -22,12 +62,12 @@ export const useGetQuery = <T>(options: GetQueryOptions<T>) => {
 
 	const axios = connection === 'secured' ? axiosSecure : axiosPublic;
 
-	const data = useQuery<T, Error, T, readonly TQueryKey[]>({
+	const data = useQuery<T | undefined, Error, T | undefined, readonly TQueryKey[]>({
 		queryKey,
 		queryFn: async () => {
-			const result = await axios.get<T>(endpoint, { params });
+			const result = await axios.get<IServerResponse<T>>(endpoint, { params });
 
-			return result.data;
+			return result.data.data;
 		},
 		...rest
 	});
