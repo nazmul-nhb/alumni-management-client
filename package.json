@@ -1,7 +1,7 @@
 {
   "name": "alumni-management",
   "private": true,
-  "version": "1.2.5",
+  "version": "1.2.6",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -38,7 +38,7 @@
     "clsx": "2.1.1",
     "framer-motion": "12.23.12",
     "nhb-hooks": "^1.14.0",
-    "nhb-toolbox": "^4.14.13",
+    "nhb-toolbox": "^4.20.20",
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "tailwind-variants": "3.0.0",
@@ -68,7 +68,7 @@
     "eslint-plugin-react-hooks": "5.2.0",
     "eslint-plugin-unused-imports": "4.2.0",
     "globals": "16.3.0",
-    "nhb-scripts": "^1.8.57",
+    "nhb-scripts": "^1.8.64",
     "prettier": "3.6.2",
     "typescript": "5.9.2",
     "vite": "7.1.3",

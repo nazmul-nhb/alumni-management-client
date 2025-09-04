@@ -9,6 +9,6 @@ export default defineScriptConfig({
 		ignorePath: '.prettierignore'
 	},
 	commit: {
-		runFormatter: false,
-	},
+		runFormatter: true
+	}
 });
