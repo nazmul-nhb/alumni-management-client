@@ -1,7 +1,7 @@
+import { title } from '@/components/primitives';
+import { useGetQuery } from '@/hooks/useGetQuery';
 import { createFileRoute } from '@tanstack/react-router';
 import { useTitle } from 'nhb-hooks';
-import { title } from '../components/primitives';
-import { useGetQuery } from '../hooks/useGetQuery';
 
 export const Route = createFileRoute('/about')({
 	component: RouteComponent,

@@ -1,9 +1,10 @@
+import { baseURL } from '@/config/constants';
+import { siteConfig } from '@/config/site';
+import type { IErrorResponse } from '@/types/interface';
 import { useNavigate } from '@tanstack/react-router';
-import axios from 'axios';
+import axios, { type AxiosError } from 'axios';
 import { getFromLocalStorage } from 'nhb-toolbox';
 import { useEffect } from 'react';
-import { baseURL } from '../config/constants';
-import { siteConfig } from '../config/site';
 
 export const useAxiosPublic = () => {
 	return axios.create({ baseURL });
@@ -37,13 +38,16 @@ export const useAxiosSecure = () => {
 		// response interceptor for handling 401 and 403 status
 		const responseInterceptor = axiosInstance.interceptors.response.use(
 			(response) => response,
-			async (error) => {
+			async (error: AxiosError<IErrorResponse>) => {
 				const status = error.response ? error.response.status : null;
 
+				const errorMsg =
+					error.response?.data?.message ?? 'Unauthorized or Forbidden Access!';
+
 				if (status === 401 || status === 403) {
-					console.error('Unauthorized or Forbidden Access: ', status);
+					console.error(errorMsg, status);
 					navigate({ to: '/' });
-					return Promise.reject(new Error('Unauthorized or Forbidden Access!'));
+					return Promise.reject(new Error(errorMsg));
 				}
 
 				console.error('API Request Error: ', error);

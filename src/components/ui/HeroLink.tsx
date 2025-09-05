@@ -1,6 +1,6 @@
 import { DropdownItem, Link as HeroUILink } from '@heroui/react';
 import { createLink } from '@tanstack/react-router';
-import type { CombinedLinkProps } from '../../types';
+import type { CombinedLinkProps } from '@/types';
 
 const Link = createLink(HeroUILink);
 

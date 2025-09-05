@@ -10,5 +10,10 @@ export default defineScriptConfig({
 	},
 	commit: {
 		runFormatter: true
+	},
+	build: {
+		distFolder: 'dist',
+		deleteDist: false,
+		commands: [{ cmd: 'tsc' }, { cmd: 'vite build' }]
 	}
 });

@@ -1,7 +1,7 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import { Navbar } from '../components/navbar';
-import { HeroLink } from '../components/ui/HeroLink';
+import { Navbar } from '@/components/navbar';
+import { HeroLink } from '@/components/ui/HeroLink';
 
 export const Route = createRootRoute({
 	component: () => (

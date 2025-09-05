@@ -1,20 +1,20 @@
-import { Input } from '@heroui/input';
-import { Kbd } from '@heroui/kbd';
 import {
 	Navbar as HeroUINavbar,
+	Input,
+	Kbd,
+	link as linkStyles,
 	NavbarBrand,
 	NavbarContent,
 	NavbarItem,
 	NavbarMenu,
 	NavbarMenuItem,
 	NavbarMenuToggle
-} from '@heroui/navbar';
-import { link as linkStyles } from '@heroui/theme';
+} from '@heroui/react';
 import clsx from 'clsx';
-import { HeroLink } from './ui/HeroLink';
 
 import { DiscordIcon, GithubIcon, Logo, SearchIcon, TwitterIcon } from '@/components/icons';
 import { ThemeSwitch } from '@/components/theme-switch';
+import { HeroLink } from '@/components/ui/HeroLink';
 import { siteConfig } from '@/config/site';
 
 export const Navbar = () => {

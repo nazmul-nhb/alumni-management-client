@@ -1,12 +1,12 @@
 import '@/styles/globals.css';
-import { HeroUIProvider } from '@heroui/system';
+import { HeroUIProvider } from '@heroui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { TitleProvider } from 'nhb-hooks';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
-import { siteConfig } from './config/site';
-import { routeTree } from './routeTree.gen';
+import { siteConfig } from '@/config/site';
+import { routeTree } from '@/routeTree.gen';
 
 const queryClient = new QueryClient();
 

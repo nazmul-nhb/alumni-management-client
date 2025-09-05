@@ -1,8 +1,8 @@
+import { useAxiosPublic, useAxiosSecure } from '@/hooks/useAxios';
+import type { TQueryKey } from '@/types';
+import type { IServerResponse } from '@/types/interface';
 import { useQuery, type UndefinedInitialDataOptions } from '@tanstack/react-query';
 import type { QueryObject } from 'nhb-toolbox/object/types';
-import type { TQueryKey } from '../types';
-import type { IServerResponse } from '../types/interface';
-import { useAxiosPublic, useAxiosSecure } from './useAxios';
 
 /**
  * * Options for the query hook.
