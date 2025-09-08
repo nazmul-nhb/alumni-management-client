@@ -16,8 +16,8 @@ const router = createRouter({
 	defaultPreloadStaleTime: 0,
 	scrollRestoration: true,
 	context: {
-		queryClient
-	}
+		queryClient,
+	},
 });
 
 declare module '@tanstack/react-router' {

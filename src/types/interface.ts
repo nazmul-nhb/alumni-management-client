@@ -1,3 +1,5 @@
+import type { ObjectId } from '@/types';
+
 export interface IGenericResponse {
 	success: boolean;
 	message: string;
@@ -16,4 +18,10 @@ export interface IError {
 
 export interface IErrorResponse extends IGenericResponse {
 	errors: IError[];
+}
+
+export interface ItemFromDB {
+	_id: ObjectId;
+	created_at: string;
+	updated_at: string;
 }

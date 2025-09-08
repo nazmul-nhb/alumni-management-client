@@ -9,9 +9,9 @@ export const Route = createFileRoute('/about')({
 		meta: [
 			{ name: 'description', content: 'About page for Alumni Management' },
 			{ name: 'keywords', content: 'about, alumni management, information' },
-			{ title: 'About | Alumni Management' }
-		]
-	})
+			{ title: 'About | Alumni Management' },
+		],
+	}),
 });
 
 function RouteComponent() {
@@ -19,7 +19,7 @@ function RouteComponent() {
 
 	const { data, isLoading } = useGetQuery<{ about: string }>({
 		endpoint: '/alumni',
-		queryKey: ['Alumni']
+		queryKey: ['Alumni'],
 	});
 
 	console.log({ data, isLoading });

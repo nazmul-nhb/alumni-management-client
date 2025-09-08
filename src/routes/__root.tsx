@@ -24,5 +24,5 @@ export const Route = createRootRoute({
 				</HeroLink>
 			</footer>
 		</div>
-	)
+	),
 });

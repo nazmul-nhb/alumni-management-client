@@ -8,7 +8,7 @@ import {
 	NavbarItem,
 	NavbarMenu,
 	NavbarMenuItem,
-	NavbarMenuToggle
+	NavbarMenuToggle,
 } from '@heroui/react';
 import clsx from 'clsx';
 
@@ -23,7 +23,7 @@ export const Navbar = () => {
 			aria-label="Search"
 			classNames={{
 				inputWrapper: 'bg-default-100',
-				input: 'text-sm'
+				input: 'text-sm',
 			}}
 			endContent={
 				<Kbd className="hidden lg:inline-block" keys={['command']}>

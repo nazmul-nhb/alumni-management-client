@@ -1,11 +1,7 @@
 import { useAxiosPublic, useAxiosSecure } from '@/hooks/useAxios';
 import type { TQueryKey } from '@/types';
 import type { IServerResponse } from '@/types/interface';
-import {
-	useMutation,
-	useQueryClient,
-	type UseMutationOptions
-} from '@tanstack/react-query';
+import { useMutation, useQueryClient, type UseMutationOptions } from '@tanstack/react-query';
 import type { QueryObject } from 'nhb-toolbox/object/types';
 
 /**
@@ -56,11 +52,9 @@ export function useMutationQuery<TVariables, TResponse = unknown>(
 	const result = useMutation<IServerResponse<TResponse>, Error, TVariables, unknown>({
 		// mutationFn receives the variables passed to mutate / mutateAsync
 		mutationFn: async (variables: TVariables) => {
-			const res = await axios[method]<IServerResponse<TResponse>>(
-				endpoint,
-				variables,
-				{ params }
-			);
+			const res = await axios[method]<IServerResponse<TResponse>>(endpoint, variables, {
+				params,
+			});
 
 			return res.data;
 		},
@@ -75,11 +69,11 @@ export function useMutationQuery<TVariables, TResponse = unknown>(
 			// invalidate the exact query key provided
 			await queryClient.invalidateQueries({
 				queryKey,
-				exact: true
+				exact: true,
 			});
 		},
 
-		...rest
+		...rest,
 	});
 
 	return result;

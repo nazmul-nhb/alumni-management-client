@@ -11,12 +11,7 @@ import type { QueryObject } from 'nhb-toolbox/object/types';
  */
 export interface QueryOptions<T>
 	extends Omit<
-		UndefinedInitialDataOptions<
-			T | undefined,
-			Error,
-			T | undefined,
-			readonly TQueryKey[]
-		>,
+		UndefinedInitialDataOptions<T | undefined, Error, T | undefined, readonly TQueryKey[]>,
 		'queryKey' | 'queryFn'
 	> {
 	/** API endpoint path starting with a slash */
@@ -69,7 +64,7 @@ export const useGetQuery = <T>(options: QueryOptions<T>) => {
 
 			return result.data.data;
 		},
-		...rest
+		...rest,
 	});
 
 	return data;

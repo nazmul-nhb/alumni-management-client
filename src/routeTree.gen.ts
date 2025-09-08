@@ -16,17 +16,17 @@ import { Route as IndexRouteImport } from './routes/index';
 const LoginRoute = LoginRouteImport.update({
 	id: '/login',
 	path: '/login',
-	getParentRoute: () => rootRouteImport
+	getParentRoute: () => rootRouteImport,
 } as any);
 const AboutRoute = AboutRouteImport.update({
 	id: '/about',
 	path: '/about',
-	getParentRoute: () => rootRouteImport
+	getParentRoute: () => rootRouteImport,
 } as any);
 const IndexRoute = IndexRouteImport.update({
 	id: '/',
 	path: '/',
-	getParentRoute: () => rootRouteImport
+	getParentRoute: () => rootRouteImport,
 } as any);
 
 export interface FileRoutesByFullPath {
@@ -88,7 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
 	IndexRoute: IndexRoute,
 	AboutRoute: AboutRoute,
-	LoginRoute: LoginRoute
+	LoginRoute: LoginRoute,
 };
 export const routeTree = rootRouteImport
 	._addFileChildren(rootRouteChildren)

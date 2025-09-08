@@ -6,14 +6,14 @@ export default defineScriptConfig({
 	format: {
 		args: ['--write'],
 		files: ['src', 'nhb.scripts.config.mjs'],
-		ignorePath: '.prettierignore'
+		ignorePath: '.prettierignore',
 	},
 	commit: {
-		runFormatter: true
+		runFormatter: true,
 	},
 	build: {
 		distFolder: 'dist',
 		deleteDist: false,
-		commands: [{ cmd: 'tsc' }, { cmd: 'vite build' }]
-	}
+		commands: [{ cmd: 'tsc' }, { cmd: 'vite build' }],
+	},
 });
