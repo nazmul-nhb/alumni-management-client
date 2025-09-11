@@ -45,4 +45,4 @@ export interface IEmploymentInfo {
 	work_location: string;
 }
 
-export interface IAlumnusInfo extends ItemFromDB {}
+export interface IAlumnusInfo extends ItemFromDB, IAlumnus {}

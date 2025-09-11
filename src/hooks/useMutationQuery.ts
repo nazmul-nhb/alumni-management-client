@@ -1,7 +1,9 @@
 import { useAxiosPublic, useAxiosSecure } from '@/hooks/useAxios';
 import type { TQueryKey } from '@/types';
-import type { IServerResponse } from '@/types/interface';
+import type { IErrorResponse, IServerResponse } from '@/types/interface';
+import { addToast } from '@heroui/react';
 import { useMutation, useQueryClient, type UseMutationOptions } from '@tanstack/react-query';
+import type { AxiosError } from 'axios';
 import type { QueryObject } from 'nhb-toolbox/object/types';
 
 /**
@@ -12,7 +14,12 @@ import type { QueryObject } from 'nhb-toolbox/object/types';
  */
 export interface MutationOptions<TVariables, TResponse = unknown>
 	extends Omit<
-		UseMutationOptions<IServerResponse<TResponse>, Error, TVariables, unknown>,
+		UseMutationOptions<
+			IServerResponse<TResponse>,
+			AxiosError<IErrorResponse, TVariables>,
+			TVariables,
+			unknown
+		>,
 		'mutationFn'
 	> {
 	/** API endpoint path starting with a slash */
@@ -45,13 +52,27 @@ export function useMutationQuery<TVariables, TResponse = unknown>(
 	const axiosPublic = useAxiosPublic();
 	const axiosSecure = useAxiosSecure();
 
-	const { connection = 'public', endpoint, params, queryKey, method, ...rest } = options;
+	const {
+		connection = 'public',
+		endpoint,
+		params,
+		queryKey,
+		method,
+		onError,
+		onSuccess,
+		...rest
+	} = options;
 
 	const axios = connection === 'secured' ? axiosSecure : axiosPublic;
 
-	const result = useMutation<IServerResponse<TResponse>, Error, TVariables, unknown>({
+	const result = useMutation<
+		IServerResponse<TResponse>,
+		AxiosError<IErrorResponse, TVariables>,
+		TVariables,
+		unknown
+	>({
 		// mutationFn receives the variables passed to mutate / mutateAsync
-		mutationFn: async (variables: TVariables) => {
+		mutationFn: async (variables) => {
 			const res = await axios[method]<IServerResponse<TResponse>>(endpoint, variables, {
 				params,
 			});
@@ -62,9 +83,17 @@ export function useMutationQuery<TVariables, TResponse = unknown>(
 		// onSuccess: call user-provided onSuccess (if any), then invalidate
 		onSuccess: async (data, variables, context) => {
 			// call caller's onSuccess if they provided one in options
-			if (typeof rest.onSuccess === 'function') {
-				await rest.onSuccess(data, variables, context);
+			if (typeof onSuccess === 'function') {
+				await onSuccess(data, variables, context);
 			}
+
+			addToast({
+				title: 'Operation Successful!',
+				description:
+					data.message ||
+					`Successfully ${method + (method === 'delete' ? 'd' : 'ed')} data!`,
+				color: 'success',
+			});
 
 			// invalidate the exact query key provided
 			await queryClient.invalidateQueries({
@@ -73,8 +102,20 @@ export function useMutationQuery<TVariables, TResponse = unknown>(
 			});
 		},
 
+		onError: async (error, variables, context) => {
+			if (typeof onError === 'function') {
+				await onError(error, variables, context);
+			}
+
+			addToast({
+				title: 'Operation Failed!',
+				description: error.response?.data.message || `Failed to ${method} data!`,
+				color: 'danger',
+			});
+		},
+
 		...rest,
 	});
 
-	return result;
+	return { ...result, error: result.error?.response?.data };
 }

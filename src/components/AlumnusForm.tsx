@@ -12,9 +12,9 @@ import {
 	SelectItem,
 	Textarea,
 } from '@heroui/react';
-import { useState } from 'react';
 
 import { BLOOD_GROUPS, DEGREES, GENDERS, PARTICIPATION } from '@/config/constants';
+import { useMutationQuery } from '@/hooks/useMutationQuery';
 import { createHeroOptions } from '@/lib/helpers';
 import type {
 	IAlumnus,
@@ -24,10 +24,11 @@ import type {
 	TGender,
 	TParticipation,
 } from '@/types/alumnus';
-import { useMutationQuery } from '@/hooks/useMutationQuery';
+import { useState, type FormEvent } from 'react';
 const genders = createHeroOptions(GENDERS);
 const bloodGroups = createHeroOptions(BLOOD_GROUPS);
 const degrees = createHeroOptions(DEGREES);
+
 const gradYears = () => {
 	const MIN = 2002;
 
@@ -45,7 +46,7 @@ const gradYears = () => {
 export default function AlumnusForm() {
 	const [previewUrl, setPreviewUrl] = useState('');
 
-	const { mutate, data } = useMutationQuery<IAlumnus, IAlumnusInfo>({
+	const { mutate, isPending } = useMutationQuery<IAlumnus, IAlumnusInfo>({
 		endpoint: '/alumni',
 		method: 'post',
 		queryKey: ['Alumnus'],
@@ -57,12 +58,41 @@ export default function AlumnusForm() {
 		return driveRegex.test(url);
 	};
 
-	/**
-	 * Dummy function to handle form values
-	 */
-	function handleSubmit(values: IAlumnus) {
-		mutate(values);
-		console.log(data);
+	function handleSubmitAlumnus(e: FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+		const data = Object.fromEntries(new FormData(e.currentTarget));
+		// Map form fields into IAlumnus
+		const alumnus: IAlumnus = {
+			personal_info: {
+				full_name: data.full_name as string,
+				date_of_birth: data.date_of_birth as string,
+				gender: data.gender as TGender,
+				image: data.image as string,
+				nationality: data.nationality as string,
+				blood_group: data.blood_group as TBloodGroup,
+			},
+			contact_info: {
+				email: data.email as any,
+				phone: data.phone as `${number}`,
+				current_address: (data.current_address as string) || '',
+			},
+			academic_info: {
+				student_id: (data.student_id as `${number}`) || undefined,
+				degree_earned: data.degree_earned as TDegree,
+				graduation_year: Number(data.graduation_year),
+				focus_area: (data.focus_area as string) || '',
+			},
+			employment_info: {
+				current_employer: (data.current_employer as string) || '',
+				job_title: (data.job_title as string) || '',
+				sector: (data.sector as string) || '',
+				work_location: (data.work_location as string) || '',
+			},
+			participation: data.participation as TParticipation,
+			interest: (data.interest as string) || '',
+		};
+
+		mutate(alumnus);
 	}
 
 	return (
@@ -73,41 +103,7 @@ export default function AlumnusForm() {
 				<Form
 					validationBehavior="native"
 					className="space-y-8"
-					onSubmit={(e) => {
-						e.preventDefault();
-						const data = Object.fromEntries(new FormData(e.currentTarget));
-						// Map form fields into IAlumnus
-						const alumnus: IAlumnus = {
-							personal_info: {
-								full_name: data.full_name as string,
-								date_of_birth: data.date_of_birth as string,
-								gender: data.gender as TGender,
-								image: data.image as string,
-								nationality: data.nationality as string,
-								blood_group: data.blood_group as TBloodGroup,
-							},
-							contact_info: {
-								email: data.email as any,
-								phone: data.phone as `${number}`,
-								current_address: (data.current_address as string) || '',
-							},
-							academic_info: {
-								student_id: (data.student_id as `${number}`) || undefined,
-								degree_earned: data.degree_earned as TDegree,
-								graduation_year: Number(data.graduation_year),
-								focus_area: (data.focus_area as string) || '',
-							},
-							employment_info: {
-								current_employer: (data.current_employer as string) || '',
-								job_title: (data.job_title as string) || '',
-								sector: (data.sector as string) || '',
-								work_location: (data.work_location as string) || '',
-							},
-							participation: data.participation as TParticipation,
-							interest: (data.interest as string) || '',
-						};
-						handleSubmit(alumnus);
-					}}
+					onSubmit={handleSubmitAlumnus}
 				>
 					{/* Personal Info */}
 					<div className="w-full grid md:grid-cols-2 gap-4">
@@ -157,16 +153,23 @@ export default function AlumnusForm() {
 						<Input
 							name="image"
 							label="Profile Image (Google Drive Link)"
+							onChange={(e) => {
+								const val = e.target.value;
+								if (!val) return setPreviewUrl('');
+								const fileId = val.match(/[-\w]{25,}/)?.[0];
+								if (fileId) {
+									setPreviewUrl(
+										`https://drive.google.com/uc?export=view&id=${fileId}`
+									);
+								} else {
+									setPreviewUrl('');
+								}
+							}}
 							validate={(val) => {
 								if (!val) return null; // optional
 								if (!validateGoogleDriveLink(val)) {
 									return 'Invalid Google Drive link.';
 								}
-								const fileId = val.match(/[-\w]{25,}/)?.[0];
-								if (fileId)
-									setPreviewUrl(
-										`https://drive.google.com/uc?export=view&id=${fileId}`
-									);
 								return null;
 							}}
 						/>
@@ -259,7 +262,12 @@ export default function AlumnusForm() {
 					<Textarea name="interest" label="Your Interests" />
 
 					<div className="flex justify-center">
-						<Button type="submit" color="primary" className="w-full md:w-1/2">
+						<Button
+							isLoading={isPending}
+							type="submit"
+							color="primary"
+							className="w-full md:w-1/2"
+						>
 							Submit
 						</Button>
 					</div>

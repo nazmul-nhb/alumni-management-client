@@ -1,5 +1,5 @@
 import '@/styles/globals.css';
-import { HeroUIProvider } from '@heroui/react';
+import { HeroUIProvider, ToastProvider } from '@heroui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { TitleProvider } from 'nhb-hooks';
@@ -34,6 +34,7 @@ if (!rootElement.innerHTML) {
 		<StrictMode>
 			<QueryClientProvider client={queryClient}>
 				<HeroUIProvider>
+					<ToastProvider placement="bottom-right" />
 					<TitleProvider config={{ siteTitle: siteConfig.name }}>
 						<RouterProvider router={router} />
 					</TitleProvider>

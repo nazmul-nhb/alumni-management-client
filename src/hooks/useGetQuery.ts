@@ -1,7 +1,8 @@
 import { useAxiosPublic, useAxiosSecure } from '@/hooks/useAxios';
 import type { TQueryKey } from '@/types';
-import type { IServerResponse } from '@/types/interface';
+import type { IErrorResponse, IServerResponse } from '@/types/interface';
 import { useQuery, type UndefinedInitialDataOptions } from '@tanstack/react-query';
+import type { AxiosError } from 'axios';
 import type { QueryObject } from 'nhb-toolbox/object/types';
 
 /**
@@ -11,7 +12,12 @@ import type { QueryObject } from 'nhb-toolbox/object/types';
  */
 export interface QueryOptions<T>
 	extends Omit<
-		UndefinedInitialDataOptions<T | undefined, Error, T | undefined, readonly TQueryKey[]>,
+		UndefinedInitialDataOptions<
+			T | undefined,
+			AxiosError<IErrorResponse, unknown>,
+			T | undefined,
+			readonly TQueryKey[]
+		>,
 		'queryKey' | 'queryFn'
 	> {
 	/** API endpoint path starting with a slash */
@@ -57,7 +63,12 @@ export const useGetQuery = <T>(options: QueryOptions<T>) => {
 
 	const axios = connection === 'secured' ? axiosSecure : axiosPublic;
 
-	const data = useQuery<T | undefined, Error, T | undefined, readonly TQueryKey[]>({
+	const data = useQuery<
+		T | undefined,
+		AxiosError<IErrorResponse, unknown>,
+		T | undefined,
+		readonly TQueryKey[]
+	>({
 		queryKey,
 		queryFn: async () => {
 			const result = await axios.get<IServerResponse<T>>(endpoint, { params });
@@ -67,5 +78,5 @@ export const useGetQuery = <T>(options: QueryOptions<T>) => {
 		...rest,
 	});
 
-	return data;
+	return { ...data, error: data.error?.response?.data };
 };

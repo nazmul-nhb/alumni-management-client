@@ -1,14 +1,13 @@
-import { createRootRoute, Outlet } from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { Navbar } from '@/components/navbar';
 import { HeroLink } from '@/components/ui/HeroLink';
+import { createRootRoute, Outlet } from '@tanstack/react-router';
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
 export const Route = createRootRoute({
 	component: () => (
 		<div className="relative flex flex-col h-screen">
 			<Navbar />
 			<main className="container mx-auto max-w-7xl px-6 flex-grow pt-16">
-				<hr />
 				<Outlet />
 				<TanStackRouterDevtools />
 			</main>
