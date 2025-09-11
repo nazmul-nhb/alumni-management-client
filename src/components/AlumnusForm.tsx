@@ -12,7 +12,7 @@ import {
 	SelectItem,
 	Textarea,
 } from '@heroui/react';
-
+import { I18nProvider } from '@react-aria/i18n';
 import { BLOOD_GROUPS, DEGREES, GENDERS, PARTICIPATION } from '@/config/constants';
 import { useMutationQuery } from '@/hooks/useMutationQuery';
 import { createHeroOptions } from '@/lib/helpers';
@@ -116,13 +116,17 @@ export default function AlumnusForm() {
 							}
 						/>
 						<div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-							<DatePicker
-								name="date_of_birth"
-								label="Date of Birth"
-								isRequired
-								showMonthAndYearPickers
-								validate={(val) => (val ? null : 'Date of birth is required.')}
-							/>
+							<I18nProvider locale="en-GB">
+								<DatePicker
+									name="date_of_birth"
+									label="Date of Birth"
+									isRequired
+									showMonthAndYearPickers
+									validate={(val) =>
+										val ? null : 'Date of birth is required.'
+									}
+								/>
+							</I18nProvider>
 						</div>
 						<Select
 							name="gender"
