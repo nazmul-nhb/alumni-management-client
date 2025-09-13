@@ -10,6 +10,10 @@ export const siteConfig = {
 			href: '/',
 		},
 		{
+			label: 'Alumni',
+			href: '/alumni',
+		},
+		{
 			label: 'About',
 			href: '/about',
 		},

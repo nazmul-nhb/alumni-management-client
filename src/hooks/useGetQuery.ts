@@ -22,11 +22,11 @@ export interface QueryOptions<T>
 	> {
 	/** API endpoint path starting with a slash */
 	endpoint: `/${string}`;
-	/** optional query params appended to the request */
+	/** Optional query params appended to the request */
 	params?: QueryObject;
-	/** stable query key used by TanStack Query for caching/invalidation */
+	/** Stable query key used by TanStack Query for caching/invalidation */
 	queryKey: TQueryKey[];
-	/** which axios instance to use, defaults to `'public'` */
+	/** Which axios instance to use, defaults to `'public'` */
 	connection?: 'secured' | 'public';
 }
 

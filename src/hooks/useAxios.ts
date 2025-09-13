@@ -41,10 +41,10 @@ export const useAxiosSecure = () => {
 			async (error: AxiosError<IErrorResponse>) => {
 				const status = error.response ? error.response.status : null;
 
-				const errorMsg =
-					error.response?.data?.message ?? 'Unauthorized or Forbidden Access!';
-
 				if (status === 401 || status === 403) {
+					const errorMsg =
+						error.response?.data?.message ?? 'Unauthorized or Forbidden Access!';
+
 					console.error(errorMsg, status);
 					navigate({ to: '/' });
 					return Promise.reject(new Error(errorMsg));

@@ -1,18 +1,3 @@
-import {
-	Button,
-	Card,
-	CardBody,
-	DatePicker,
-	Form,
-	Image,
-	Input,
-	Radio,
-	RadioGroup,
-	Select,
-	SelectItem,
-	Textarea,
-} from '@heroui/react';
-import { I18nProvider } from '@react-aria/i18n';
 import { BLOOD_GROUPS, DEGREES, GENDERS, PARTICIPATION } from '@/config/constants';
 import { useMutationQuery } from '@/hooks/useMutationQuery';
 import { createHeroOptions } from '@/lib/helpers';
@@ -24,7 +9,22 @@ import type {
 	TGender,
 	TParticipation,
 } from '@/types/alumnus';
+import {
+	Button,
+	Card,
+	CardBody,
+	DatePicker,
+	Form,
+	Input,
+	Radio,
+	RadioGroup,
+	Select,
+	SelectItem,
+	Textarea,
+} from '@heroui/react';
+import { I18nProvider } from '@react-aria/i18n';
 import { useState, type FormEvent } from 'react';
+
 const genders = createHeroOptions(GENDERS);
 const bloodGroups = createHeroOptions(BLOOD_GROUPS);
 const degrees = createHeroOptions(DEGREES);
@@ -45,6 +45,7 @@ const gradYears = () => {
 
 export default function AlumnusForm() {
 	const [previewUrl, setPreviewUrl] = useState('');
+	const [isImageLoading, setIsImageLoading] = useState(false);
 
 	const { mutate, isPending } = useMutationQuery<IAlumnus, IAlumnusInfo>({
 		endpoint: '/alumni',
@@ -56,6 +57,46 @@ export default function AlumnusForm() {
 		const driveRegex =
 			/^https:\/\/drive\.google\.com\/(file\/d\/|open\?id=)([a-zA-Z0-9_-]+)/;
 		return driveRegex.test(url);
+	};
+
+	const getDirectImageUrl = (url: string): string => {
+		// Extract file ID from different Google Drive URL formats
+		const fileIdMatch = url.match(/[-\w]{25,}/);
+		if (!fileIdMatch) return '';
+
+		const fileId = fileIdMatch[0];
+
+		// Use this format for direct image access
+		return `https://drive.google.com/uc?export=view&id=${fileId}`;
+	};
+
+	const handleImageUrlChange = (url: string) => {
+		if (!url) {
+			setPreviewUrl('');
+			return;
+		}
+
+		if (!validateGoogleDriveLink(url)) {
+			setPreviewUrl('');
+			return;
+		}
+
+		setIsImageLoading(true);
+		const directUrl = getDirectImageUrl(url);
+
+		// Test if the image loads successfully
+		const testImage = new Image();
+		testImage.onload = () => {
+			setPreviewUrl(directUrl);
+			setIsImageLoading(false);
+		};
+		testImage.onerror = () => {
+			// If direct URL fails, try thumbnail version
+			const fileId = url.match(/[-\w]{25,}/)?.[0];
+			setPreviewUrl(fileId ? `https://lh3.googleusercontent.com/d/${fileId}=s200` : '');
+			setIsImageLoading(false);
+		};
+		testImage.src = directUrl;
 	};
 
 	function handleSubmitAlumnus(e: FormEvent<HTMLFormElement>) {
@@ -95,10 +136,39 @@ export default function AlumnusForm() {
 		mutate(alumnus);
 	}
 
+	console.log({ previewUrl });
+
 	return (
 		<Card className="max-w-3xl mx-auto my-10 shadow-2xl rounded-2xl">
 			<CardBody className="p-8 space-y-6">
 				<h1 className="text-3xl font-bold text-center">Alumni Registration Form</h1>
+
+				{/* {isImageLoading && (
+					<div className="col-span-2 flex justify-center">
+						<Spinner size="lg" />
+					</div>
+				)}
+
+				{previewUrl && !isImageLoading && (
+					<div className="col-span-2 flex justify-center">
+						<HeroImage
+							src={previewUrl}
+							alt="Preview"
+							width={150}
+							height={150}
+							className="rounded-xl shadow object-cover"
+							isBlurred
+						/>
+					</div>
+				)} */}
+
+				{/* <HeroImage
+					src="https://drive.google.com/uc?export=view&id=1b29Ka38XvGZU0Ge5TBODlMGbUHFy0YW_"
+					alt="Preview"
+					width={150}
+					height={150}
+					className="rounded-xl shadow object-cover"
+				/> */}
 
 				<Form
 					validationBehavior="native"
@@ -177,16 +247,6 @@ export default function AlumnusForm() {
 								return null;
 							}}
 						/>
-						{previewUrl && (
-							<div className="col-span-2 flex justify-center">
-								<Image
-									src={previewUrl}
-									alt="Preview"
-									width={150}
-									className="rounded-xl shadow"
-								/>
-							</div>
-						)}
 					</div>
 
 					{/* Contact Info */}
