@@ -45,7 +45,7 @@ const gradYears = () => {
 
 export default function AlumnusForm() {
 	const [previewUrl, setPreviewUrl] = useState('');
-	const [isImageLoading, setIsImageLoading] = useState(false);
+	// const [isImageLoading, setIsImageLoading] = useState(false);
 
 	const { mutate, isPending } = useMutationQuery<IAlumnus, IAlumnusInfo>({
 		endpoint: '/alumni',
@@ -59,45 +59,45 @@ export default function AlumnusForm() {
 		return driveRegex.test(url);
 	};
 
-	const getDirectImageUrl = (url: string): string => {
-		// Extract file ID from different Google Drive URL formats
-		const fileIdMatch = url.match(/[-\w]{25,}/);
-		if (!fileIdMatch) return '';
+	// const getDirectImageUrl = (url: string): string => {
+	// 	// Extract file ID from different Google Drive URL formats
+	// 	const fileIdMatch = url.match(/[-\w]{25,}/);
+	// 	if (!fileIdMatch) return '';
 
-		const fileId = fileIdMatch[0];
+	// 	const fileId = fileIdMatch[0];
 
-		// Use this format for direct image access
-		return `https://drive.google.com/uc?export=view&id=${fileId}`;
-	};
+	// 	// Use this format for direct image access
+	// 	return `https://drive.google.com/uc?export=view&id=${fileId}`;
+	// };
 
-	const handleImageUrlChange = (url: string) => {
-		if (!url) {
-			setPreviewUrl('');
-			return;
-		}
+	// const handleImageUrlChange = (url: string) => {
+	// 	if (!url) {
+	// 		setPreviewUrl('');
+	// 		return;
+	// 	}
 
-		if (!validateGoogleDriveLink(url)) {
-			setPreviewUrl('');
-			return;
-		}
+	// 	if (!validateGoogleDriveLink(url)) {
+	// 		setPreviewUrl('');
+	// 		return;
+	// 	}
 
-		setIsImageLoading(true);
-		const directUrl = getDirectImageUrl(url);
+	// 	setIsImageLoading(true);
+	// 	const directUrl = getDirectImageUrl(url);
 
-		// Test if the image loads successfully
-		const testImage = new Image();
-		testImage.onload = () => {
-			setPreviewUrl(directUrl);
-			setIsImageLoading(false);
-		};
-		testImage.onerror = () => {
-			// If direct URL fails, try thumbnail version
-			const fileId = url.match(/[-\w]{25,}/)?.[0];
-			setPreviewUrl(fileId ? `https://lh3.googleusercontent.com/d/${fileId}=s200` : '');
-			setIsImageLoading(false);
-		};
-		testImage.src = directUrl;
-	};
+	// 	// Test if the image loads successfully
+	// 	const testImage = new Image();
+	// 	testImage.onload = () => {
+	// 		setPreviewUrl(directUrl);
+	// 		setIsImageLoading(false);
+	// 	};
+	// 	testImage.onerror = () => {
+	// 		// If direct URL fails, try thumbnail version
+	// 		const fileId = url.match(/[-\w]{25,}/)?.[0];
+	// 		setPreviewUrl(fileId ? `https://lh3.googleusercontent.com/d/${fileId}=s200` : '');
+	// 		setIsImageLoading(false);
+	// 	};
+	// 	testImage.src = directUrl;
+	// };
 
 	function handleSubmitAlumnus(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
