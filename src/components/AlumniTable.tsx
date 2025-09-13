@@ -42,7 +42,7 @@ const columns: Array<{ key: DotNotationKey<IAlumnusInfo>; label: string }> = [
 ];
 
 export default function AlumniTable() {
-	const { data, isLoading } = useGetQuery<IAlumnusInfo[]>({
+	const { data = [], isLoading } = useGetQuery<IAlumnusInfo[]>({
 		endpoint: '/alumni',
 		queryKey: ['Alumni'],
 		connection: 'secured',
